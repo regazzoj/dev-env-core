@@ -1,27 +1,79 @@
-icons_format = "{icon}"
-
-[theme]
-theme = "semi-native"
-
-[icons]
+theme = "solarized-dark"
 icons = "awesome5"
 
 [[block]]
-block = "cpu"
-
-[[block]]
 block = "memory"
-format = " $icon $mem_total_used_percents.eng(w:2) "
-format_alt = " $icon_swap $swap_used_percents.eng(w:2) "
+format_mem = "{mem_used;M}/{mem_total;M}"
+format_swap = "{swap_used;M}/{swap_total;M}"
+display_type = "memory"
+icons = true
+clickable = true
+interval = 5
+warning_mem = 80
+warning_swap = 80
+critical_mem = 95
+critical_swap = 95
 
 [[block]]
-block = "battery"
+block = "cpu"
+interval = 1
+format = "{utilization}"
+
+[[block]]
+block = "nvidia_gpu"
+label = "GPU"
+show_memory = false
+show_clocks = false
+interval = 1
+
+[[block]]
+block = "temperature"
+collapsed = false
+interval = 10
+format = "CPU {average}C"
+chip = "dell_smm-virtual-0"
+inputs = ["CPU"]
+
+[[block]]
+block = "weather"
+format = "{weather} (Cocurès) {temp}C"
+service = { name = "openweathermap", api_key = "APIKEY", city_id = "2997288", units = "metric" }
+
+[[block]]
+block = "pacman"
+interval = 600
+format = "{aur} updates available"
+format_singular = "{aur} update available"
+format_up_to_date = "system up to date"
+critical_updates_regex = "(linux |linux-lts|linux-zen)"
+# aur_command should output available updates to stdout (ie behave as echo -ne "update\n")
+aur_command = "pamac checkupdates -qa"
+on_click = "pamac-manager --updates"
 
 [[block]]
 block = "music"
-format = " $icon {$combo.str(max_w:20) $play $next |}"
+buttons = ["play", "next"]
+
+[[block]]
+block = "sound"
+step_width = 3
+on_click = "pavucontrol"
+
+[[block]]
+block = "networkmanager"
+device_format = "{icon}{ap} {ips}"
+on_click = "alacritty -e nmtui"
+interface_name_exclude = ["br\\-[0-9a-f]{12}", "docker\\d+"]
+interface_name_include = ["wlp60s0","enp59s0","proton0"]
+ap_format = "{ssid^10}"
 
 [[block]]
 block = "time"
-interval = 5
-format = " $timestamp.datetime(f:'%a %d/%m %R') "
+interval = 60
+format = "%d/%m %R"
+timezone = "Europe/Paris"
+
+[[block]]
+block = "battery"
+interval = 10
+format = "{percentage}% {time}"
