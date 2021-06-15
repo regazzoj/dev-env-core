@@ -3,8 +3,8 @@ icons = "awesome5"
 
 [[block]]
 block = "memory"
-format_mem = "{mem_used;M}/{mem_total;M}"
-format_swap = "{swap_used;M}/{swap_total;M}"
+format_mem = "{mem_used;M:6}/{mem_total;M:6}"
+format_swap = "{swap_used;M:6}/{swap_total;M:6}"
 display_type = "memory"
 icons = true
 clickable = true
