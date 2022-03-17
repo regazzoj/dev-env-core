@@ -1,10 +1,10 @@
-theme = "solarized-dark"
+theme = "nord-dark"
 icons = "awesome5"
 
 [[block]]
 block = "memory"
-format_mem = "{mem_used;M:6}/{mem_total;M:6}"
-format_swap = "{swap_used;M:6}/{swap_total;M:6}"
+format_mem = "{mem_used:6}/{mem_total:6}"
+format_swap = "{swap_used:6}/{swap_total:6}"
 display_type = "memory"
 icons = true
 clickable = true
@@ -20,24 +20,22 @@ interval = 1
 format = "{utilization}"
 
 [[block]]
-block = "nvidia_gpu"
-label = "GPU"
-show_memory = false
-show_clocks = false
-interval = 1
-
-[[block]]
 block = "temperature"
 collapsed = false
 interval = 10
 format = "CPU {average}C"
-chip = "dell_smm-virtual-0"
-inputs = ["CPU"]
+chip = "pch_cannonlake-virtual-0"
+
+
+[[block]]
+block = "weather"
+format = "{weather} (Mende) {temp}C"
+service = { name = "openweathermap", api_key = "1ee37fef2e1668e418c3cebd62e6ccd2", city_id = "2994617", units = "metric" }
 
 [[block]]
 block = "weather"
 format = "{weather} (Cocurès) {temp}C"
-service = { name = "openweathermap", api_key = "APIKEY", city_id = "2997288", units = "metric" }
+service = { name = "openweathermap", api_key = "1ee37fef2e1668e418c3cebd62e6ccd2", city_id = "2997288", units = "metric" }
 
 [[block]]
 block = "pacman"
@@ -64,13 +62,13 @@ block = "networkmanager"
 device_format = "{icon}{ap} {ips}"
 on_click = "alacritty -e nmtui"
 interface_name_exclude = ["br\\-[0-9a-f]{12}", "docker\\d+"]
-interface_name_include = ["wlp60s0","enp59s0","proton0"]
+interface_name_include = ["wlo1","eno2","tun0"]
 ap_format = "{ssid^10}"
 
 [[block]]
 block = "time"
-interval = 60
-format = "%d/%m %R"
+interval = 1
+format = "%d/%m/%Y %T"
 timezone = "Europe/Paris"
 
 [[block]]
