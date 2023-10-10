@@ -1,13 +1,14 @@
-theme = "nord-dark"
-icons = "awesome5"
+[theme]
+#theme = "nord-dark"
+theme = "dracula"
+
+[icons]
+icons = "awesome6"
 
 [[block]]
 block = "memory"
-format_mem = "{mem_used:6}/{mem_total:6}"
-format_swap = "{swap_used:6}/{swap_total:6}"
-display_type = "memory"
-icons = true
-clickable = true
+format = " $icon $mem_used.eng(prefix:M)/$mem_total.eng(prefix:M) "
+format_alt = " $icon_swap $swap_used.eng(prefix:M)/$swap_total.eng(prefix:M) "
 interval = 5
 warning_mem = 80
 warning_swap = 80
@@ -17,61 +18,142 @@ critical_swap = 95
 [[block]]
 block = "cpu"
 interval = 1
-format = "{utilization}"
+format = " $icon $utilization "
 
 [[block]]
 block = "temperature"
-collapsed = false
+format_alt = "$icon "
 interval = 10
-format = "CPU {average}C"
-chip = "pch_cannonlake-virtual-0"
-
+format = " $icon $average "
 
 [[block]]
 block = "weather"
-format = "{weather} (Mende) {temp}C"
-service = { name = "openweathermap", api_key = "1ee37fef2e1668e418c3cebd62e6ccd2", city_id = "2994617", units = "metric" }
+format = " $icon $weather (Mende) $temp "
+[block.service]
+name = "openweathermap"
+api_key = "1ee37fef2e1668e418c3cebd62e6ccd2"
+city_id = "2994617"
+units = "metric"
 
 [[block]]
 block = "weather"
-format = "{weather} (Cocurès) {temp}C"
-service = { name = "openweathermap", api_key = "1ee37fef2e1668e418c3cebd62e6ccd2", city_id = "2997288", units = "metric" }
+format = " $icon $weather (Cocurès) $temp "
+[block.service]
+name = "openweathermap"
+api_key = "1ee37fef2e1668e418c3cebd62e6ccd2"
+city_id = "2997288"
+units = "metric"
 
 [[block]]
 block = "pacman"
 interval = 600
-format = "{aur} updates available"
-format_singular = "{aur} update available"
-format_up_to_date = "system up to date"
+format = " $icon $aur updates available "
+format_singular = " $icon $aur update available "
+format_up_to_date = " $icon System up-to-date "
 critical_updates_regex = "(linux |linux-lts|linux-zen)"
 # aur_command should output available updates to stdout (ie behave as echo -ne "update\n")
 aur_command = "pamac checkupdates -qa"
-on_click = "pamac-manager --updates"
+signal = 1
+[[block.click]]
+button = "left"
+cmd = "pamac-manager --updates"
+[[block.click]]
+button = "right"
+update = true
 
 [[block]]
 block = "music"
-buttons = ["play", "next"]
+format = " $icon {$combo.str(max_w:25,rot_interval:0.5) $play $next |}"
+[[block.click]]
+button = "left"
+action = "play_pause"
+[[block.click]]
+button = "up"
+action = "volume_up"
+[[block.click]]
+button = "down"
+action = "volume_down"
+[[block.click]]
+button = "forward"
+action = "seek_forward"
+[[block.click]]
+button = "back"
+action = "seek_backward"
 
 [[block]]
 block = "sound"
 step_width = 3
-on_click = "pavucontrol"
+[[block.click]]
+button = "left"
+cmd = "pavucontrol"
 
 [[block]]
-block = "networkmanager"
-device_format = "{icon}{ap} {ips}"
-on_click = "alacritty -e nmtui"
-interface_name_exclude = ["br\\-[0-9a-f]{12}", "docker\\d+"]
-interface_name_include = ["wlo1","eno2","tun0"]
-ap_format = "{ssid^10}"
+block = "bluetooth"
+mac = "00:00:AB:BD:8E:8B"
+disconnected_format = " $icon Not connected "
+format = " $icon $name{ $percentage|} "
+[block.battery_state]
+"0..20" = "critical"
+"21..70" = "warning"
+"71..100" = "good"
+[[block.click]]
+button = "left"
+cmd = "~/.i3/scripts/switch_bluetooth_device.sh bluez_card.00_00_AB_BD_8E_8B"
+[[block.click]]
+button = "double_left"
+cmd = "~/.i3/scripts/connect.sh 00_00_AB_BD_8E_8B"
+
+[[block]]
+block = "net"
+format = " $icon $ssid $ip "
+inactive_format = ""
+missing_format = ""
+device = "wlo1"
+[[block.click]]
+button = "left"
+cmd = "alacritty -e nmtui"
+[[block.click]]
+button = "right"
+cmd = "protonvpn"
+
+[[block]]
+block = "net"
+format = " $icon $ip "
+inactive_format = ""
+missing_format = ""
+device = "eno2"
+[[block.click]]
+button = "left"
+cmd = "alacritty -e nmtui"
+[[block.click]]
+button = "right"
+cmd = "protonvpn"
+
+[[block]]
+block = "net"
+format = " $icon $ip "
+missing_format = ""
+device = "tun0"
+[[block.click]]
+button = "left"
+cmd = "alacritty -e nmtui"
+
+[[block]]
+block = "net"
+format = " $icon $ip "
+missing_format = ""
+device = "proton0"
+[[block.click]]
+button = "left"
+cmd = "protonvpn"
 
 [[block]]
 block = "time"
 interval = 1
-format = "%d/%m/%Y %T"
+format = " $icon $timestamp.datetime(f:'%d/%m/%Y %T %Z') "
 timezone = "Europe/Paris"
 
 [[block]]
 block = "battery"
 interval = 10
-format = "{percentage}% {time}"
+format = " $icon $percentage {$time |} "

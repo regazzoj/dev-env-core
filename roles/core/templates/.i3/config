@@ -77,7 +77,7 @@ bindsym $mod+F5 exec terminal -e 'mocp'
 bindsym $mod+t exec --no-startup-id pkill compton
 bindsym $mod+Ctrl+t exec --no-startup-id compton -b
 bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
-bindsym Print exec --no-startup-id flameshot gui
+bindsym Print exec --no-startup-id i3-scrot
 bindsym $mod+Print --release exec --no-startup-id i3-scrot -w
 bindsym $mod+Shift+Print --release exec --no-startup-id i3-scrot -s
 bindsym $mod+Shift+h exec xdg-open /usr/share/doc/manjaro/i3_help.pdf
@@ -370,6 +370,7 @@ bar {
 #     font pango:Inconsolata, Font Awesome 6 Free 14px
 #     position bottom
 #     status_command i3status-rs ~/.i3/config.toml
+#     strip_workspace_numbers yes
 #     colors {
 #         background #2e3440
 #         focused_workspace #0088CC #0088CC #ffffff
